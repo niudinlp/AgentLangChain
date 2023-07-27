@@ -20,36 +20,38 @@ class Converter:
 		"""
 		pass
 
-	def __call__(self, data):
+	def __call__(self, data, primary_key):
 		"""
 		convert structured data into sequential data
 		"""
 		if isinstance(data, dict):	# ignore nested dict case
-			doc = self.convert_dict(data) + self.line_sep
+			doc = self.convert_dict(data, primary_key) + self.line_sep
 		elif isinstance(data, pd.DataFrame):
-			doc = self.convert_dataframe(data) + self.doc_sep
+			doc = self.convert_dataframe(data, primary_key) + self.doc_sep
 		else:
 			raise RuntimeError(f"specify supported type: dict, DataFrame")
 
 		return doc
 
-	def convert_dict(self, data):
+	def convert_dict(self, data, primary_key):
 		"""
 		convert dictionary into sequence
 		"""
 		ss = []
+		primary_value = data[primary_key]
 		for key, val in data.items():
-			ss.append(f"{key}: {val}")
-		return ", ".join(ss)
+			ss.append(f"{key}是{val}")
+		return f"以下是{primary_value}的信息：" + ", ".join(ss)
 
-	def convert_dataframe(self, data):
+	def convert_dataframe(self, data, primary_key):
 		doc = ""
 		for row in data.iterrows():
 			ss = []
+			primary_value = row[1][primary_key]
 			for label, val in zip(row[1].index, row[1].values):
 				if pd.isna(val):
 					print(">>>> Ignore NaN value:", label, val)
 					continue
-				ss.append(f"{label}: {val}")
-			doc += ", ".join(ss) + self.line_sep
+				ss.append(f"{label}是{val}")
+			doc += f"以下是{primary_value}的信息：" + ", ".join(ss) + self.line_sep
 		return doc

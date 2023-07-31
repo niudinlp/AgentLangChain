@@ -43,7 +43,7 @@ class GPT2(LLM):
 
 	@property
 	def _llm_type(self):
-		return "llama2"
+		return "gpt2"
 
 	@property
 	def _identifying_params(self):

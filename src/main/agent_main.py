@@ -7,15 +7,13 @@ Description   :
 from langchain.agents import Tool
 from langchain.chat_models import ChatOpenAI
 from langchain.utilities import SerpAPIWrapper
-from langchain.agents import ConversationalAgent
-# from langchain.agents import initialize_agent
+from langchain.experimental.plan_and_execute import PlanAndExecute, load_agent_executor, load_chat_planner
+
 
 # set enviroment key: OPENAI_API_KEY SERPAPI_API_KEY
 # e.g: os.environ["OPENAI_API_KEY"] = "xxxxx", or export OPENAI_API_KEY=xxxx in shell
-llm = ChatOpenAI()
 
 search = SerpAPIWrapper()
-
 tools = [
 	Tool(
 		name = "Current Search",
@@ -25,7 +23,12 @@ tools = [
 ]
 
 
-agent = ConversationalAgent.from_llm_and_tools(llm, tools)
+model = ChatOpenAI(temperature=0)
+
+planner = load_chat_planner(model)
+executor = load_agent_executor(model, tools, verbose=True)
+agent = PlanAndExecute(planner=planner, executor=executor, verbose=True)
+
 
 query = "tell me who won the world cup in 1978?"
 

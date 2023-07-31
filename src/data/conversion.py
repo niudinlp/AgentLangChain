@@ -40,8 +40,10 @@ class Converter:
 		ss = []
 		primary_value = data[primary_key]
 		for key, val in data.items():
-			ss.append(f"{key}是{val}")
-		return f"以下是{primary_value}的信息：" + ", ".join(ss)
+			# ss.append(f"{key}是{val}")
+			ss.append(f"{key}: {val}")
+		# return f"以下是{primary_value}的信息：" + ", ".join(ss)
+		return ", ".join(ss)
 
 	def convert_dataframe(self, data, primary_key):
 		doc = ""
@@ -52,6 +54,8 @@ class Converter:
 				if pd.isna(val):
 					print(">>>> Ignore NaN value:", label, val)
 					continue
-				ss.append(f"{label}是{val}")
-			doc += f"以下是{primary_value}的信息：" + ", ".join(ss) + self.line_sep
+				# ss.append(f"{label}是{val}")
+				ss.append(f"{label}: {val}")
+			# doc += f"以下是{primary_value}的信息：" + ", ".join(ss) + self.line_sep
+			doc += ", ".join(ss) + self.line_sep
 		return doc

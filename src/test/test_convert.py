@@ -17,7 +17,8 @@ df = load_dataset_from_excel(datafile)
 converter = Converter()
 doc = converter(df, "楼盘名称")
 
-save_file = "/Users/diniu/Documents/python/agentlangchain/datafiles/private/loupan_data.txt"
+# save_file = "/Users/diniu/Documents/python/agentlangchain/datafiles/private/loupan_data.txt"
+save_file = "/Users/diniu/Documents/python/agentlangchain/datafiles/private/loupan_data_v2.txt"
 with open(save_file, "w", encoding="utf-8") as fid:
     fid.write(doc)
 
